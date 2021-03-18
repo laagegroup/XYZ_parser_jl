@@ -2,7 +2,7 @@ module XYZ
 
 using Parameters
 
-export load_xyz, natoms, nframes, positions
+export load_xyz, natoms, nframes, positions, atomnames
 
 
 """
@@ -33,6 +33,7 @@ Stores information about a xyz trajectory file.
     io::IO
     natoms::Int64
     nframes::Int64
+    atomnames::Array{String,1}
     posbytes::Array{Int64,1}
 end
 
@@ -47,6 +48,7 @@ function File(io::IO)
         io=io,
         natoms=natoms(loader),
         nframes=nframes(loader),
+        atomnames=atomnames(loader),
         posbytes=posbytes(loader),
         )
 end
@@ -71,6 +73,13 @@ natoms(f::File) = f.natoms
 Get the number of frames.
 """
 nframes(f::File) = f.nframes
+
+"""
+    atomnames(f::File)
+
+Get all atom names, the topology, of a frame.
+"""
+atomnames(f::File) = f.atomnames
 
 """
     posbytes(f::File)
@@ -115,6 +124,7 @@ Stores information from the xyz trajectory file pre-loading.
     firststep::Int64
     laststep::Int64
     natoms::Int64
+    atomnames::Array{String,1}
     posbytes::Array{Int64,1}
 end
 
@@ -128,8 +138,10 @@ function Loader(io::IO)
     natoms = parse(Int64,readline(io))
     readline(io)
     posbytes = Int64[position(io)]
+    atomnames = String[]
     for iat=1:natoms
-        readline(io)
+        l = readline(io)
+        push!(atomnames,string(split(l)[1]))
     end
     while !eof(io)
         readline(io)
@@ -147,6 +159,7 @@ function Loader(io::IO)
         firststep=firststep, 
         laststep=laststep, 
         natoms=natoms,
+        atomnames=atomnames,
         posbytes=posbytes
         )
 end
@@ -164,6 +177,13 @@ natoms(h::Loader)::Int64 = h.natoms
 Get the number of frames.
 """
 nframes(h::Loader)::Int64 = h.nframes
+
+"""
+    atomnames(h::Loader)
+
+Get all atom names, the topology, of a frame.
+"""
+atomnames(h::Loader)::Array{String,1} = h.atomnames
 
 """
     posbytes(h::Loader)
