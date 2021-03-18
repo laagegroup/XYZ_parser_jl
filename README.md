@@ -18,6 +18,7 @@ xyz = load_xyz("foo.xyz")
 
 na = natoms(xyz)  # Get the number of atoms.
 nf = nframes(xyz) # Get the number of frames.
+atoms = atomnames(xyz) # Get the list of atom names.
 
 for frame in xyz  # Iterate over each frame.
   r = positions(frame)  # Get an array of all current positions with dimensions (3, na).
