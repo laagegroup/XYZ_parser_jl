@@ -1,7 +1,7 @@
 # XYZ.jl
 A Julia package for reading XYZ trajectory files.
 
-This package is in an early stage. It currently supports for sure only XYZ files written by Lammps. This package is a copy of the DCD module in my gitlab.
+This package is in an early stage. It currently supports XYZ files with a constant number of atoms. This package is a copy of the DCD module in my gitlab.
 
 ## Installation (with set-up ssh keys)
 
