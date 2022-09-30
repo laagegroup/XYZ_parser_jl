@@ -21,15 +21,15 @@ end
 Load a xyz trajectory from stream `io`.
 """
 function load_xyz(io::IO)
-    File(io)
+    FileXYZ(io)
 end
 
 """
-    @with_kw struct File
+    @with_kw struct FileXYZ
 
 Stores information about a xyz trajectory file.
 """
-@with_kw struct File
+@with_kw struct FileXYZ
     io::IO
     natoms::Int64
     nframes::Int64
@@ -38,13 +38,13 @@ Stores information about a xyz trajectory file.
 end
 
 """
-    File(io::IO)
+    FileXYZ(io::IO)
 
-Construct a [`XYZ.File`](@ref) object from an IO stream `io`.
+Construct a [`XYZ.FileXYZ`](@ref) object from an IO stream `io`.
 """
-function File(io::IO)
+function FileXYZ(io::IO)
     loader = Loader(io)
-    File(
+    FileXYZ(
         io=io,
         natoms=natoms(loader),
         nframes=nframes(loader),
@@ -54,62 +54,62 @@ function File(io::IO)
 end
 
 """
-    iostream(f::File)
+    iostream(f::FileXYZ)
 
-Get the [`IOStream`](@ref) associated with the [`XYZ.File`](@ref) object.
+Get the [`IOStream`](@ref) associated with the [`XYZ.FileXYZ`](@ref) object.
 """
-iostream(f::File) = f.io
+iostream(f::FileXYZ) = f.io
 
 """
-    natoms(f::File)
+    natoms(f::FileXYZ)
 
 Get the number of atoms.
 """
-natoms(f::File) = f.natoms
+natoms(f::FileXYZ) = f.natoms
 
 """
-    nframes(f::File)
+    nframes(f::FileXYZ)
 
 Get the number of frames.
 """
-nframes(f::File) = f.nframes
+nframes(f::FileXYZ) = f.nframes
 
 """
-    atomnames(f::File)
+    atomnames(f::FileXYZ)
 
 Get all atom names, the topology, of a frame.
 """
-atomnames(f::File) = f.atomnames
+atomnames(f::FileXYZ) = f.atomnames
 
 """
-    posbytes(f::File)
+    posbytes(f::FileXYZ)
 
 Get the position of each frame in a Array{Int64,1}.
 """
-posbytes(f::File) = f.posbytes
+posbytes(f::FileXYZ) = f.posbytes
 
 """
-    Base.eltype(::Type{File})
+    Base.eltype(::Type{FileXYZ})
 
-[`XYZ.File`](@ref) objects are iterators over [`XYZ.Frame`](@ref) objects.
+[`XYZ.FileXYZ`](@ref) objects are iterators over [`XYZ.FrameXYZ`](@ref) objects.
 """
-Base.eltype(::Type{File}) = Frame
+Base.eltype(::Type{FileXYZ}) = FrameXYZ
 
-function Base.getindex(f::File, i::Int64)
+function Base.getindex(f::FileXYZ, i::Int64)
     1 <= i <= f.nframes || throw(BoundsError(f, i))
-    return Frame(f, i)
+    return FrameXYZ(f, i)
 end
-Base.getindex(f::File, i::Number) = f[convert(Int64, i)]
-Base.getindex(f::File, I) = [f[i] for i in I]
-Base.firstindex(f::File) = 1
-Base.lastindex(f::File) = f.nframes
-Base.length(f::File) = f.nframes
+Base.getindex(f::FileXYZ, i::Number) = f[convert(Int64, i)]
+Base.getindex(f::FileXYZ, I) = [f[i] for i in I]
+Base.firstindex(f::FileXYZ) = 1
+Base.lastindex(f::FileXYZ) = f.nframes
+Base.length(f::FileXYZ) = f.nframes
 
-function Base.iterate(f::File, frame::Int64=1)
+function Base.iterate(f::FileXYZ, frame::Int64=1)
     if frame > nframes(f)
         return nothing
     else
-        return Frame(f, frame), frame + 1
+        return FrameXYZ(f, frame), frame + 1
     end
 end
 
@@ -193,11 +193,11 @@ Get the position of each frame in a Array{Int64,1}.
 posbytes(h::Loader)::Array{Int64,1} = h.posbytes
 
 """
-    seekframe(f::File, index::Int64)
+    seekframe(f::FileXYZ, index::Int64)
 
 Move the file's [`IOStream`](@ref) to the position of the indicated frame.
 """
-function seekframe(f::File, index::Int64)
+function seekframe(f::FileXYZ, index::Int64)
     1 <= index <= f.nframes || throw(BoundsError(f, index))
     pos = posbytes(f)[index]
     seek(f.io, pos)
@@ -205,20 +205,20 @@ end
 
 
 """
-    @with_kw struct Frame
+    @with_kw struct FrameXYZ
 
 Stores positions.
 """
-@with_kw struct Frame
+@with_kw struct FrameXYZ
     positions::Array{Float64,2}
 end
 
 """
-    Frame(f::File, index::Int64)
+    FrameXYZ(f::FileXYZ, index::Int64)
 
-Construct a [`DCD.Frame`](@ref) object from a [`DCD.File`](@ref) `f` with the specified `index`.
+Construct a [`XYZ.FrameXYZ`](@ref) object from a [`XYZ.FileXYZ`](@ref) `f` with the specified `index`.
 """
-function Frame(f::File, index::Int64)
+function FrameXYZ(f::FileXYZ, index::Int64)
     seekframe(f, index)
     io = iostream(f)
     positions = Array{Float64,2}(undef, 3, natoms(f))
@@ -229,14 +229,14 @@ function Frame(f::File, index::Int64)
         end
     end
 
-    Frame(positions=positions)
+    FrameXYZ(positions=positions)
 end
 
 """
-    positions(f::Frame)
+    positions(f::FrameXYZ)
 
 Get the current positions.
 """
-positions(f::Frame) = f.positions
+positions(f::FrameXYZ) = f.positions
 
 end
