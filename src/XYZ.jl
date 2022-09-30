@@ -1,6 +1,7 @@
 module XYZ
 
 using Parameters
+import DCD: positions
 
 export load_xyz, natoms, nframes, positions, atomnames
 
