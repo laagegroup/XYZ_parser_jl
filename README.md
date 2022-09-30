@@ -45,6 +45,8 @@ It currently supports XYZ files with a constant number of atoms.
 
 This package is a Julia parser for XYZ files. It works with Julia 1.5 or above.
 
+It requires the DCD package. You should install the DCD parser first!
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <div id="installation"></div>
