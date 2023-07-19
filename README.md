@@ -63,6 +63,18 @@ pkg> add git@github.com:laagegroup/XYZ_parser_jl.git
 
 <div id="usage"></div>
 
+## Installation (with https, RECOMMENDED)
+
+This package can be directly added via https by running the following command from the julia interface:
+
+````julia
+pkg> add https://github.com/laagegroup/XYZ_parser_jl.git
+````
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<div id="usage"></div>
+
+
 ## Usage
 
 This package can be used in the Julia REPL or within a Julia script. Here is an example of the main features:
