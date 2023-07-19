@@ -17,7 +17,7 @@
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation (with set-up ssh keys)</a></li>
+        <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -48,8 +48,6 @@ This package is a Julia parser for XYZ files. It works with Julia 1.5 or above.
 
 It requires the DCD package. You should install the DCD parser first!
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 <div id="installation"></div>
 
 ## Installation (with set-up ssh keys)
@@ -59,21 +57,18 @@ Adding private packages to Julia requires a password-less access (see the [manua
 ````julia
 pkg> add git@github.com:laagegroup/XYZ_parser_jl.git
 ````
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<div id="usage"></div>
 
 ## Installation (with https, RECOMMENDED)
 
-This package can be directly added via https by running the following command from the julia interface:
+This package can be directly added via https by running the following command from the Julia interface:
 
 ````julia
 pkg> add https://github.com/laagegroup/XYZ_parser_jl.git
 ````
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <div id="usage"></div>
-
 
 ## Usage
 
